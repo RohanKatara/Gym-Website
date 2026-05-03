@@ -1,0 +1,16 @@
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+*.swp
+*.swo
+
+# Claude Code
+.claude/
+
+# Node (if firebase tools installed later)
+node_modules/
+.firebase/
