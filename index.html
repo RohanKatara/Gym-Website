@@ -710,45 +710,38 @@
     position: relative;
     height: 440px;
     cursor: pointer;
+    perspective: 1000px;
   }
   .trainer-inner {
     position: relative;
-    width: 100%;
-    height: 100%;
+    width: 100%; height: 100%;
+    transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .trainer:hover .trainer-inner {
+    transform: rotateY(180deg);
   }
   .trainer-face {
     position: absolute;
     top: 0; left: 0;
-    width: 100%;
-    height: 100%;
+    width: 100%; height: 100%;
     background: var(--card);
     border: 1px solid var(--line);
     display: flex;
     flex-direction: column;
-    transition: transform 0.7s ease, opacity 0.7s ease;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
   }
   .trainer-face.front {
     z-index: 2;
-    transform: rotateY(0deg);
   }
   .trainer-face.back {
-    z-index: 1;
-    opacity: 0;
-    transform: rotateY(0deg);
+    transform: rotateY(180deg);
     background: #0d0d15;
     border-color: var(--red);
     padding: 32px;
     justify-content: space-between;
-  }
-  .trainer:hover .trainer-face.front {
-    transform: scale(0.95);
-    opacity: 0;
-    z-index: 1;
-  }
-  .trainer:hover .trainer-face.back {
-    transform: scale(1);
-    opacity: 1;
-    z-index: 2;
   }
   .trainer-photo {
     flex: 1;
@@ -1465,8 +1458,11 @@
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
     }
-    .trainer-face {
-      transition-duration: 0.7s !important;
+    .trainer-inner {
+      transition-duration: 0.8s !important;
+    }
+    .trainer-socials a {
+      transition-duration: 0.2s !important;
     }
     .reveal { opacity: 1; transform: none; }
     .hero-kicker, .hero h1, .hero-tag, .hero-ctas, .stats-bar { opacity: 1; animation: none; }
