@@ -23,7 +23,7 @@
     --gold: #FFD700;
   }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   html { scroll-behavior: smooth; }
   body {
     background: var(--bg);
@@ -112,6 +112,7 @@
     display: flex; align-items: center; justify-content: space-between;
     transition: all 0.35s ease;
     background: transparent;
+    border-bottom: 1px solid transparent;
   }
   nav.topnav.scrolled {
     background: rgba(10,10,10,0.88);
@@ -229,17 +230,32 @@
     gap: 32px;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.4s ease, visibility 0.4s ease;
+    clip-path: inset(0 0 100% 0);
+    transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                visibility 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                clip-path 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: clip-path, opacity;
   }
-  .mobile-menu.open { opacity: 1; visibility: visible; }
+  .mobile-menu.open { opacity: 1; visibility: visible; clip-path: inset(0); }
   .mobile-menu a {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 36px;
     letter-spacing: 0.12em;
     color: var(--text);
     text-decoration: none;
-    transition: color 0.2s;
+    transform: translateY(20px);
+    opacity: 0;
+    transition: color 0.2s, transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
   }
+  .mobile-menu.open a { transform: translateY(0); opacity: 1; }
+  .mobile-menu.open a:nth-child(1) { transition-delay: 0.08s; }
+  .mobile-menu.open a:nth-child(2) { transition-delay: 0.14s; }
+  .mobile-menu.open a:nth-child(3) { transition-delay: 0.20s; }
+  .mobile-menu.open a:nth-child(4) { transition-delay: 0.26s; }
+  .mobile-menu.open a:nth-child(5) { transition-delay: 0.32s; }
+  .mobile-menu.open a:nth-child(6) { transition-delay: 0.38s; }
+  .mobile-menu.open a:nth-child(7) { transition-delay: 0.44s; }
+  .mobile-menu.open a:nth-child(8) { transition-delay: 0.50s; }
   .mobile-menu a:hover { color: var(--red); }
 
   /* ----- HERO ----- */
@@ -561,6 +577,7 @@
     box-shadow: 0 -4px 30px -10px var(--red-glow);
   }
   .feature:hover::after { transform: scaleX(1); }
+  .features a { color: inherit; text-decoration: none; display: contents; }
   .feature-icon {
     width: 48px; height: 48px;
     margin-bottom: 28px;
@@ -646,11 +663,6 @@
     cursor: pointer;
     overflow: hidden;
   }
-  .program:hover {
-    transform: perspective(1000px) rotateX(3deg) rotateY(-3deg) translateY(-4px);
-    border-color: var(--red);
-    background: rgba(26,26,46,0.85);
-  }
   .program::before {
     content: '';
     position: absolute;
@@ -661,7 +673,14 @@
     opacity: 0;
     transition: opacity 0.3s;
   }
-  .program:hover::before { opacity: 1; }
+  @media (hover: hover) {
+    .program:hover {
+      transform: perspective(1000px) rotateX(3deg) rotateY(-3deg) translateY(-4px);
+      border-color: var(--red);
+      background: rgba(26,26,46,0.85);
+    }
+    .program:hover::before { opacity: 1; }
+  }
   .program-num {
     font-family: 'JetBrains Mono', monospace;
     font-size: 11px;
@@ -688,22 +707,10 @@
     margin-bottom: 28px;
     min-height: 42px;
   }
-  .program-link {
-    display: inline-flex; align-items: center; gap: 8px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--text);
-    text-decoration: none;
-    transition: gap 0.25s, color 0.25s;
-  }
-  .program:hover .program-link { color: var(--red); gap: 14px; }
-
   /* ----- TRAINERS ----- */
   .trainers-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 20px;
   }
   .trainer {
@@ -719,7 +726,8 @@
     -webkit-transform-style: preserve-3d;
     transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   }
-  .trainer:hover .trainer-inner {
+  .trainer:hover .trainer-inner,
+  .trainer.flipped .trainer-inner {
     transform: rotateY(180deg);
   }
   .trainer-face {
@@ -746,12 +754,16 @@
   .trainer-photo {
     flex: 1;
     position: relative;
-    background:
-      radial-gradient(ellipse at center top, #26262e 0%, #0d0d15 70%),
-      repeating-linear-gradient(45deg, #141420 0 8px, #0e0e18 8px 16px);
+    background: #0d0d15;
     overflow: hidden;
-    display: flex; align-items: flex-end; justify-content: center;
-    padding-bottom: 0;
+  }
+  .trainer-photo img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
   }
   .trainer-silhouette {
     width: 70%;
@@ -761,7 +773,7 @@
     filter: blur(1px);
   }
   .trainer-photo::after {
-    content: 'PHOTO';
+    content: '';
     position: absolute;
     top: 14px; right: 14px;
     font-family: 'JetBrains Mono', monospace;
@@ -939,6 +951,14 @@
       repeating-linear-gradient(45deg, #1a1a2e 0 6px, #141420 6px 12px);
     display: flex; align-items: flex-end;
     padding: 14px;
+    overflow: hidden;
+  }
+  .ba-half img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
   .ba-half.after {
     background:
@@ -946,6 +966,8 @@
       repeating-linear-gradient(45deg, #1d1a22 0 6px, #161318 6px 12px);
   }
   .ba-half span {
+    position: relative;
+    z-index: 1;
     font-family: 'JetBrains Mono', monospace;
     font-size: 9px;
     letter-spacing: 0.3em;
@@ -1015,8 +1037,11 @@
   .testimonials-track {
     display: flex;
     gap: 24px;
-    animation: marquee 50s linear infinite;
+    animation: marquee 120s linear infinite;
     width: max-content;
+  }
+  .testimonials:hover .testimonials-track {
+    animation-play-state: paused;
   }
   .testimonial {
     width: 420px;
@@ -1261,6 +1286,7 @@
     grid-template-columns: 40px 1fr;
     gap: 18px;
     align-items: flex-start;
+    transition: all 0.3s ease;
   }
   .info-icon {
     width: 40px; height: 40px;
@@ -1285,6 +1311,7 @@
     font-size: 11px;
     letter-spacing: 0.2em;
   }
+  .info-block:hover { border-color: var(--red); transform: translateY(-2px); }
 
   .contact-blocks {
     display: grid;
@@ -1406,8 +1433,70 @@
     box-shadow: 0 10px 30px -10px var(--red-glow);
   }
 
+  /* ----- SCROLL PROGRESS ----- */
+  .scroll-progress {
+    position: absolute;
+    bottom: 0; left: 0;
+    height: 2px;
+    background: var(--red);
+    width: 0%;
+    z-index: 101;
+  }
+
+  /* ----- BACK TO TOP ----- */
+  .back-to-top {
+    position: fixed;
+    bottom: 24px; right: 16px;
+    width: 44px; height: 44px;
+    background: var(--card-2);
+    border: 1px solid var(--line-2);
+    color: var(--text);
+    font-size: 18px;
+    cursor: pointer;
+    z-index: 89;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s, background 0.2s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .back-to-top.visible { opacity: 1; visibility: visible; }
+  .back-to-top:active { background: var(--red); }
+
   /* ----- RESPONSIVE ----- */
   @media (max-width: 1024px) {
+    .hero {
+      height: auto;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      overflow: visible;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .hero-inner {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding-top: 80px;
+      padding-bottom: 24px;
+    }
+    .hero-kicker { margin-bottom: 16px; }
+    .hero h1 { margin-bottom: 16px; }
+    .hero-tag { margin-bottom: 28px; }
+    .stats-bar {
+      position: relative;
+      left: auto;
+      right: auto;
+      bottom: auto;
+      width: 100%;
+    }
     nav.topnav, nav.topnav.scrolled { padding: 16px 24px; }
     .nav-links { display: none; }
     .nav-toggle { display: flex; }
@@ -1416,6 +1505,7 @@
     .section-wrap { padding-top: 100px; padding-bottom: 100px; }
     .stats-bar { grid-template-columns: repeat(2, 1fr); padding: 20px 24px; }
     .about-grid { grid-template-columns: 1fr; gap: 40px; }
+    .about-image { aspect-ratio: 4/3; }
     .features { grid-template-columns: repeat(2, 1fr); }
     .programs-grid { grid-template-columns: repeat(2, 1fr); }
     .trainers-grid { grid-template-columns: repeat(2, 1fr); }
@@ -1432,6 +1522,8 @@
     footer { padding: 60px 24px 32px; }
   }
   @media (max-width: 640px) {
+    .hero-tag { margin-bottom: 24px; }
+    .hero-ctas { gap: 10px; }
     .features, .programs-grid, .trainers-grid, .results-grid, .gallery-grid, .pricing-grid { grid-template-columns: 1fr; }
     .gallery-grid { grid-auto-rows: 200px; }
     .gallery-item:nth-child(n) { grid-row: auto; }
@@ -1448,7 +1540,97 @@
     .stat-value { font-size: 32px; }
     .section-header { margin-bottom: 48px; }
     .about-meta { grid-template-columns: 1fr 1fr; }
-    .trainer { height: 380px; }
+    .trainer { height: auto; min-height: 360px; }
+    .trainer-photo { min-height: 260px; }
+    /* Gallery eye/overlay: hidden by default, revealed via .touched class (JS) */
+    .loader-mark { width: 64px; height: 64px; font-size: 32px; }
+    .loader-bar { width: 140px; }
+    .loader-text { font-size: 10px; margin-top: 24px; }
+    .section-wrap { padding-top: 64px; padding-bottom: 64px; }
+    .tier { padding: 32px 24px; }
+    .counter { padding: 32px 24px; }
+    .hero-tag { font-size: 15px; }
+    .counter .num { font-size: clamp(56px, 14vw, 88px); }
+    .testimonial { width: 300px; padding: 24px; }
+    .testimonial-quote { font-size: 14px; }
+    .back-to-top { bottom: 80px; }
+    .testimonials { overflow: hidden; }
+    .testimonials-track { animation: marquee 90s linear infinite; }
+    .testimonial { flex-shrink: 0; }
+  }
+
+  /* Touch device: .touched (sustained via JS) + :active (momentary press) */
+  @media (hover: none) {
+    /* Feature cards */
+    .feature.touched {
+      background: #101019;
+      transform: translateY(-6px);
+      box-shadow: 0 -4px 30px -10px var(--red-glow);
+    }
+    .feature.touched::after { transform: scaleX(1); }
+    .feature:active {
+      background: #101019;
+      transform: translateY(-3px);
+      box-shadow: 0 -2px 20px -8px var(--red-glow);
+    }
+    .feature:active::after { transform: scaleX(1); }
+
+    /* Program cards */
+    .program.touched {
+      transform: translateY(-4px);
+      border-color: var(--red);
+      background: rgba(26,26,46,0.85);
+    }
+    .program.touched::before { opacity: 1; }
+    .program:active {
+      transform: scale(0.98);
+      border-color: var(--red);
+      transition-duration: 0.1s;
+    }
+
+    /* Pricing tiers */
+    .tier.touched { border-color: var(--line-2); transform: translateY(-4px); }
+    .tier.featured.touched { transform: translateY(-4px); }
+    .tier:active { border-color: var(--red); transform: translateY(-2px); }
+    .tier.featured:active { transform: translateY(-2px); }
+
+    /* Before/after cards */
+    .before-after.touched { transform: translateY(-6px); }
+    .before-after:active { transform: translateY(-3px); }
+
+    /* Gallery items */
+    .gallery-item.touched { transform: scale(1.02); }
+    .gallery-item.touched::after { opacity: 1; }
+    .gallery-item.touched .eye { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    .gallery-item:active { transform: scale(0.99); }
+
+    /* Info blocks */
+    .info-block.touched { border-color: var(--red); transform: translateY(-2px); }
+    .info-block:active { border-color: var(--red); }
+
+    /* Buttons */
+    .btn.touched {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px -8px var(--red-glow);
+    }
+    .btn:active { transform: scale(0.96); opacity: 0.85; }
+
+    /* Social links */
+    .socials a.touched { border-color: var(--red); background: var(--red); color: var(--bg); }
+    .socials a:active { border-color: var(--red); background: var(--red); color: var(--bg); }
+
+    /* Footer links */
+    .footer-col a.touched { color: var(--red); }
+    .footer-col a:active { color: var(--red); }
+
+    /* Sticky CTA */
+    .sticky-cta.touched { opacity: 0.85; transform: scale(0.98); }
+    .sticky-cta:active { opacity: 0.85; transform: scale(0.98); }
+
+    /* GPU hint only while touched */
+    .feature.touched, .program.touched, .tier.touched,
+    .before-after.touched, .gallery-item.touched,
+    .sticky-cta.touched { will-change: transform; }
   }
 
   /* Reduced motion */
@@ -1464,9 +1646,31 @@
     .trainer-socials a {
       transition-duration: 0.2s !important;
     }
-    .reveal { opacity: 1; transform: none; }
+    .mobile-menu {
+      transition-duration: 0.3s !important;
+    }
+    .mobile-menu a {
+      transition-duration: 0.2s !important;
+    }
+    .back-to-top {
+      transition-duration: 0.2s !important;
+    }
+    /* Interactive feedback — essential UX, not decorative */
+    .feature, .feature::after,
+    .program, .program::before,
+    .tier, .before-after,
+    .gallery-item, .gallery-item::after, .gallery-item .eye,
+    .info-block, .btn, .sticky-cta,
+    .socials a, .footer-col a {
+      transition-duration: 0.25s !important;
+    }
+    /* Scroll reveals — fade only (no translateY motion) */
+    .reveal {
+      transition-duration: 0.5s !important;
+      transform: none !important;
+    }
     .hero-kicker, .hero h1, .hero-tag, .hero-ctas, .stats-bar { opacity: 1; animation: none; }
-    .testimonials-track { animation: none; }
+    .testimonials-track { animation: marquee 120s linear infinite !important; animation-iteration-count: infinite !important; }
   }
 </style>
 </head>
@@ -1503,6 +1707,7 @@
   <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
     <span></span><span></span><span></span>
   </button>
+  <div class="scroll-progress" id="scrollProgress"></div>
 </nav>
 
 <!-- MOBILE MENU -->
@@ -1569,17 +1774,17 @@
     <div class="about-grid reveal">
       <div class="about-image" id="aboutSlideshow">
         <img src="gym-1.jpeg" alt="Gym interior" class="active">
-        <img src="gym-2.jpeg" alt="Gym interior">
-        <img src="gym-3.jpeg" alt="Gym interior">
-        <img src="gym-4.jpeg" alt="Gym interior">
-        <img src="gym-5.jpeg" alt="Gym interior">
-        <img src="gym-6.jpeg" alt="Gym interior">
-        <img src="gym-7.jpeg" alt="Gym interior">
+        <img src="gym-2.jpeg" alt="Gym interior" loading="lazy">
+        <img src="gym-3.jpeg" alt="Gym interior" loading="lazy">
+        <img src="gym-4.jpeg" alt="Gym interior" loading="lazy">
+        <img src="gym-5.jpeg" alt="Gym interior" loading="lazy">
+        <img src="gym-6.jpeg" alt="Gym interior" loading="lazy">
+        <img src="gym-7.jpeg" alt="Gym interior" loading="lazy">
       </div>
       <div class="about-text">
         <div class="section-label">Why Choose Us</div>
         <h2 class="display">Built for those<br>who <span style="color:var(--red)">don't quit.</span></h2>
-        <p><strong>Patel's Fitness Club is not a chain gym.</strong> It's a three-floor training facility in the heart of Rajkot, built by lifters for lifters. Since 2015 we've helped over 500 members rewrite their bodies &mdash; and the way they think about themselves.</p>
+        <p><strong>Patel's Fitness Club is not a chain gym.</strong> It's a three-floor training facility in the heart of Rajkot, built by lifters for lifters. Since 2015 we've helped over 500 members rewrite their bodies and the way they think about themselves.</p>
         <p>From heavy strength platforms on the ground floor to recovery steam rooms on the top, every square foot is designed around one thing: your results.</p>
         <div class="about-meta">
           <div class="about-meta-item"><div class="k">12,000</div><div class="v">Sq. Ft. Facility</div></div>
@@ -1591,6 +1796,7 @@
     </div>
 
     <div class="features reveal">
+      <a href="#trainers">
       <div class="feature">
         <div class="feature-num">01</div>
         <div class="feature-icon">
@@ -1599,6 +1805,8 @@
         <h3>Expert Trainers</h3>
         <p>Certified coaches with international credentials guiding every session.</p>
       </div>
+      </a>
+      <a href="#gallery">
       <div class="feature">
         <div class="feature-num">02</div>
         <div class="feature-icon">
@@ -1607,6 +1815,8 @@
         <h3>Premium Equipment</h3>
         <p>Commercial-grade machines, Olympic platforms, and free weights imported globally.</p>
       </div>
+      </a>
+      <a href="#gallery">
       <div class="feature">
         <div class="feature-num">03</div>
         <div class="feature-icon">
@@ -1615,6 +1825,8 @@
         <h3>Steam & Recovery</h3>
         <p>Private steam rooms and recovery zones for serious post-workout restoration.</p>
       </div>
+      </a>
+      <a href="#gallery">
       <div class="feature">
         <div class="feature-num">04</div>
         <div class="feature-icon">
@@ -1623,6 +1835,7 @@
         <h3>3-Floor Facility</h3>
         <p>Strength, cardio, and recovery each get their own dedicated floor.</p>
       </div>
+      </a>
     </div>
   </div>
 </section>
@@ -1635,50 +1848,46 @@
         <div class="section-label">Our Programs</div>
         <h2 class="section-title display">TRAIN WITH<br><span class="red">PURPOSE.</span></h2>
       </div>
-      <p class="section-sub">Four programs engineered for every body and every goal. Pick a lane or cross-train between them &mdash; every member has full access.</p>
+      <p class="section-sub">Four programs engineered for every body and every goal. Pick a lane or cross-train between them, every member has full access.</p>
     </div>
 
     <div class="programs-grid reveal">
       <div class="program">
         <div class="program-image" data-slideshow>
-          <img src="st-1.jpeg" alt="Strength Training" class="active">
-          <img src="st-2.jpeg" alt="Strength Training">
-          <img src="st-3.jpeg" alt="Strength Training">
-          <img src="st-4.jpeg" alt="Strength Training">
+          <img src="st-1.jpeg" alt="Strength Training" class="active" loading="lazy">
+          <img src="st-2.jpeg" alt="Strength Training" loading="lazy">
+          <img src="st-3.jpeg" alt="Strength Training" loading="lazy">
+          <img src="st-4.jpeg" alt="Strength Training" loading="lazy">
         </div>
         <div class="program-num">/ 01</div>
         <h3>Strength Training</h3>
         <p>Progressive overload, compound lifts, and measured PRs.</p>
-        <a href="#" class="program-link">Learn More &rarr;</a>
       </div>
       <div class="program">
         <div class="program-image" data-slideshow>
-          <img src="cardio-1.jpeg" alt="Cardio & HIIT" class="active">
-          <img src="cardio-2.jpeg" alt="Cardio & HIIT">
-          <img src="cardio-3.jpeg" alt="Cardio & HIIT">
+          <img src="cardio-1.jpeg" alt="Cardio & HIIT" class="active" loading="lazy">
+          <img src="cardio-2.jpeg" alt="Cardio & HIIT" loading="lazy">
+          <img src="cardio-3.jpeg" alt="Cardio & HIIT" loading="lazy">
         </div>
         <div class="program-num">/ 02</div>
         <h3>Cardio & HIIT</h3>
         <p>Circuit-based conditioning that burns fat without killing gains.</p>
-        <a href="#" class="program-link">Learn More &rarr;</a>
       </div>
       <div class="program">
         <div class="program-image">
-          <div class="program-image-placeholder"><span>PERSONAL TRAINING PHOTO</span></div>
+          <img src="personal-training.jpeg" alt="Personal Training" class="active" loading="lazy">
         </div>
         <div class="program-num">/ 03</div>
         <h3>Personal Training</h3>
         <p>1-on-1 coaching built around your goals, schedule, and biomechanics.</p>
-        <a href="#" class="program-link">Learn More &rarr;</a>
       </div>
       <div class="program">
         <div class="program-image">
-          <div class="program-image-placeholder"><span>WEIGHT LOSS PROGRAM PHOTO</span></div>
+          <img src="weight-loss.jpeg" alt="Weight Loss Program" class="active" loading="lazy">
         </div>
         <div class="program-num">/ 04</div>
         <h3>Weight Loss Program</h3>
         <p>12-week transformation blocks with weekly tracking and nutrition calls.</p>
-        <a href="#" class="program-link">Learn More &rarr;</a>
       </div>
     </div>
   </div>
@@ -1699,20 +1908,20 @@
       <div class="trainer">
         <div class="trainer-inner">
           <div class="trainer-face front">
-            <div class="trainer-photo"><div class="trainer-silhouette"></div></div>
+            <div class="trainer-photo"><img src="trainer-ravi-rathod.jpeg" alt="Ravi Rathod" loading="lazy"></div>
             <div class="trainer-info">
-              <h3>Coach Raj</h3>
-              <div class="trainer-spec">Strength &middot; Powerlifting</div>
-              <div class="trainer-years">12 years experience</div>
+              <h3>Ravi Rathod</h3>
+              <div class="trainer-spec">CPT Level 2 (INFS)</div>
+              <div class="trainer-years">10+ years experience</div>
             </div>
           </div>
           <div class="trainer-face back">
             <div>
-              <h3>Coach Raj</h3>
-              <p>Former state powerlifting champion. Raj has coached over 200 members to their first 100kg deadlift. Specializes in low-bar squat mechanics and competition prep.</p>
+              <h3>Ravi Rathod</h3>
+              <p>INFS-certified CPT Level 2 trainer with over 10 years of experience. Has guided 60+ members through successful body transformations.</p>
             </div>
             <div class="trainer-socials">
-              <a href="#">IG</a><a href="#">YT</a><a href="#">WA</a>
+              <a href="#" rel="noopener noreferrer">IG</a><a href="#" rel="noopener noreferrer">WA</a>
             </div>
           </div>
         </div>
@@ -1720,20 +1929,20 @@
       <div class="trainer">
         <div class="trainer-inner">
           <div class="trainer-face front">
-            <div class="trainer-photo"><div class="trainer-silhouette"></div></div>
+            <div class="trainer-photo"><img src="trainer-seeraj.png" alt="Seeraj Dalwani" style="object-position:center 30%;" loading="lazy"></div>
             <div class="trainer-info">
-              <h3>Coach Priya</h3>
-              <div class="trainer-spec">Women's Fitness &middot; HIIT</div>
-              <div class="trainer-years">8 years experience</div>
+              <h3>Seeraj Dalwani</h3>
+              <div class="trainer-spec">MIFF Certified</div>
+              <div class="trainer-years">10+ years experience</div>
             </div>
           </div>
           <div class="trainer-face back">
             <div>
-              <h3>Coach Priya</h3>
-              <p>NASM-CPT and pre/post natal specialist. Priya runs our women-only morning HIIT and has led 40+ members through full body recomposition programs.</p>
+              <h3>Seeraj Dalwani</h3>
+              <p>MIFF-certified trainer with over 10 years of experience. Has successfully transformed 40+ members at Patel's Fitness Club.</p>
             </div>
             <div class="trainer-socials">
-              <a href="#">IG</a><a href="#">YT</a><a href="#">WA</a>
+              <a href="#" rel="noopener noreferrer">IG</a><a href="#" rel="noopener noreferrer">WA</a>
             </div>
           </div>
         </div>
@@ -1741,20 +1950,20 @@
       <div class="trainer">
         <div class="trainer-inner">
           <div class="trainer-face front">
-            <div class="trainer-photo"><div class="trainer-silhouette"></div></div>
+            <div class="trainer-photo"><img src="trainer-brijesh.png" alt="Brijesh Jain" style="object-position:center center;" loading="lazy"></div>
             <div class="trainer-info">
-              <h3>Coach Vikram</h3>
-              <div class="trainer-spec">CrossFit &middot; Conditioning</div>
-              <div class="trainer-years">10 years experience</div>
+              <h3>Brijesh Jain</h3>
+              <div class="trainer-spec">Pro Ultimate Academy</div>
+              <div class="trainer-years">4+ years experience</div>
             </div>
           </div>
           <div class="trainer-face back">
             <div>
-              <h3>Coach Vikram</h3>
-              <p>CrossFit L2 trainer and endurance coach. Leads our 6AM and 7PM WOD classes. Known for programming that humbles even the fittest new members.</p>
+              <h3>Brijesh Jain</h3>
+              <p>Certified by Pro Ultimate Academy with 4+ years of training experience at Patel's Fitness Club.</p>
             </div>
             <div class="trainer-socials">
-              <a href="#">IG</a><a href="#">YT</a><a href="#">WA</a>
+              <a href="#" rel="noopener noreferrer">IG</a><a href="#" rel="noopener noreferrer">WA</a>
             </div>
           </div>
         </div>
@@ -1762,20 +1971,41 @@
       <div class="trainer">
         <div class="trainer-inner">
           <div class="trainer-face front">
-            <div class="trainer-photo"><div class="trainer-silhouette"></div></div>
+            <div class="trainer-photo"><img src="trainer-smit.jpeg" alt="Smit" loading="lazy"></div>
             <div class="trainer-info">
-              <h3>Coach Aarav</h3>
-              <div class="trainer-spec">Nutrition &middot; Recovery</div>
-              <div class="trainer-years">7 years experience</div>
+              <h3>Smit</h3>
+              <div class="trainer-spec">ACE-CPT &middot; Functional Training</div>
+              <div class="trainer-years">5+ years experience</div>
             </div>
           </div>
           <div class="trainer-face back">
             <div>
-              <h3>Coach Aarav</h3>
-              <p>ISSA nutrition-certified and mobility specialist. Runs our diet consultation arm and monthly recovery workshops in the steam room lounge.</p>
+              <h3>Smit</h3>
+              <p>ACE-certified personal trainer specializing in strength and functional fitness. Known for crafting personalized workout plans that deliver real, measurable results.</p>
             </div>
             <div class="trainer-socials">
-              <a href="#">IG</a><a href="#">YT</a><a href="#">WA</a>
+              <a href="#" rel="noopener noreferrer">IG</a><a href="#" rel="noopener noreferrer">WA</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="trainer">
+        <div class="trainer-inner">
+          <div class="trainer-face front">
+            <div class="trainer-photo"><img src="trainer-rahul.jpeg" alt="Rahul" style="object-position:center center;" loading="lazy"></div>
+            <div class="trainer-info">
+              <h3>Rahul</h3>
+              <div class="trainer-spec">ISSA-CPT &middot; Weight Loss</div>
+              <div class="trainer-years">6+ years experience</div>
+            </div>
+          </div>
+          <div class="trainer-face back">
+            <div>
+              <h3>Rahul</h3>
+              <p>ISSA-certified personal trainer and weight loss specialist with 6+ years of experience. Passionate about helping members build endurance and hit their target physique.</p>
+            </div>
+            <div class="trainer-socials">
+              <a href="#" rel="noopener noreferrer">IG</a><a href="#" rel="noopener noreferrer">WA</a>
             </div>
           </div>
         </div>
@@ -1811,7 +2041,7 @@
       </div>
       <div class="tier">
         <div class="tier-name">QUARTERLY</div>
-        <div class="tier-price"><span class="amount">&#8377;6,000</span><span class="per">/ 3 months</span></div>
+        <div class="tier-price"><span class="amount">&#8377;8,000</span><span class="per">/ 3 months</span></div>
         <div class="tier-sub">3 months &middot; Billed upfront</div>
         <ul class="tier-features">
           <li class="included">Unlimited steam room access</li>
@@ -1825,7 +2055,7 @@
       <div class="tier featured">
         <div class="tier-badge">Best Value</div>
         <div class="tier-name">HALF YEARLY</div>
-        <div class="tier-price"><span class="amount">&#8377;8,000</span><span class="per">/ 6 months</span></div>
+        <div class="tier-price"><span class="amount">&#8377;12,000</span><span class="per">/ 6 months</span></div>
         <div class="tier-sub">6 months &middot; Save more</div>
         <ul class="tier-features">
           <li class="included">Unlimited steam room access</li>
@@ -1838,7 +2068,7 @@
       </div>
       <div class="tier">
         <div class="tier-name">ANNUAL</div>
-        <div class="tier-price"><span class="amount">&#8377;15,000</span><span class="per">/ year</span></div>
+        <div class="tier-price"><span class="amount">&#8377;18,000</span><span class="per">/ year</span></div>
         <div class="tier-sub">12 months &middot; Maximum savings</div>
         <ul class="tier-features">
           <li class="included">Unlimited steam room access</li>
@@ -1861,33 +2091,33 @@
         <div class="section-label">Transformations</div>
         <h2 class="section-title display">REAL RESULTS.<br><span class="red">REAL PEOPLE.</span></h2>
       </div>
-      <p class="section-sub">Progress isn't posted for aesthetics &mdash; it's earned in the 5AM sessions nobody sees. Here are a few of ours.</p>
+      <p class="section-sub">Progress isn't posted for aesthetics, it's earned in the 5AM sessions nobody sees. Here are a few of ours.</p>
     </div>
 
     <div class="results-grid reveal">
       <div class="before-after">
-        <div class="ba-half before"><span>BEFORE</span></div>
-        <div class="ba-half after"><span>AFTER &mdash; 16 WKS</span></div>
+        <div class="ba-half before"><img src="t1-before.png" alt="Before" loading="lazy"><span>BEFORE 99.8 KG</span></div>
+        <div class="ba-half after"><img src="t1-after.png" alt="After" loading="lazy"><span>AFTER 80.7 KG</span></div>
         <div class="ba-divider"></div>
-        <div class="ba-caption">RAVI M. &middot; -18 KG</div>
+        <div class="ba-caption">3 MONTHS &middot; -19 KG</div>
       </div>
       <div class="before-after">
-        <div class="ba-half before"><span>BEFORE</span></div>
-        <div class="ba-half after"><span>AFTER &mdash; 24 WKS</span></div>
+        <div class="ba-half before"><img src="t2-before.png" alt="Before" loading="lazy"><span>BEFORE</span></div>
+        <div class="ba-half after"><img src="t2-after.png" alt="After" loading="lazy"><span>AFTER 1 YEAR</span></div>
         <div class="ba-divider"></div>
-        <div class="ba-caption">NEHA P. &middot; -12 KG</div>
+        <div class="ba-caption">1 YEAR &middot; -31 KG</div>
       </div>
       <div class="before-after">
-        <div class="ba-half before"><span>BEFORE</span></div>
-        <div class="ba-half after"><span>AFTER &mdash; 20 WKS</span></div>
+        <div class="ba-half before"><img src="t3-before.png" alt="Before" loading="lazy"><span>BEFORE</span></div>
+        <div class="ba-half after"><img src="t3-after.png" alt="After" loading="lazy"><span>AFTER</span></div>
         <div class="ba-divider"></div>
-        <div class="ba-caption">KARAN S. &middot; +8 KG LEAN</div>
+        <div class="ba-caption">WEIGHT LOSS TRANSFORMATION</div>
       </div>
       <div class="before-after">
-        <div class="ba-half before"><span>BEFORE</span></div>
-        <div class="ba-half after"><span>AFTER &mdash; 32 WKS</span></div>
+        <div class="ba-half before"><img src="t4-before.jpeg" alt="Before" style="object-fit:contain; background:#0A0A0A;" loading="lazy"><span>BEFORE</span></div>
+        <div class="ba-half after"><img src="t4-after.jpeg" alt="After" style="object-fit:contain; background:#0A0A0A;" loading="lazy"><span>AFTER</span></div>
         <div class="ba-divider"></div>
-        <div class="ba-caption">MEERA D. &middot; -22 KG</div>
+        <div class="ba-caption">FITNESS TRANSFORMATION</div>
       </div>
     </div>
 
@@ -1909,60 +2139,144 @@
     <div class="testimonials reveal">
       <div class="testimonials-track">
         <div class="testimonial">
-          <p class="testimonial-quote">I've trained at four gyms in Rajkot. This is the only one where the coaches actually remember my goals and hold me to them.</p>
+          <p class="testimonial-quote">I had a great experience at this gym and highly recommend it. The gym offers all facilities needed for a complete workout, with well-maintained equipment and a positive environment.</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">D</div>
+            <div class="testimonial-meta"><strong>Dev Patel</strong><span>&#9733;&#9733;&#9733;&#9733;&#9733; &middot; Google Review</span></div>
+          </div>
+        </div>
+        <div class="testimonial">
+          <p class="testimonial-quote">I've had an amazing experience at Patel Fitness Club. The environment is clean, motivating, and well-equipped for all fitness levels. A special thanks to my Personal Trainer Mr. Ravi Rathod Sir for the guidance and support.</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">Y</div>
+            <div class="testimonial-meta"><strong>Yash Thadeshwar</strong><span>&#9733;&#9733;&#9733;&#9733;&#9733; &middot; Google Review</span></div>
+          </div>
+        </div>
+        <div class="testimonial">
+          <p class="testimonial-quote">I have been working out at Patel Fitness for the last 10 years. The atmosphere is excellent. A special thanks to trainer Ravi Rathod for his tremendous guidance, continuous support &amp; motivation.</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">K</div>
+            <div class="testimonial-meta"><strong>Ketan Patel</strong><span>&#9733;&#9733;&#9733;&#9733;&#9733; &middot; Google Review</span></div>
+          </div>
+        </div>
+        <div class="testimonial">
+          <p class="testimonial-quote">Honestly, if you're serious about changing your physique, Patel's Fitness Centre is the only place to be. But the real game-changer there is Mr. Brijesh Jain.</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">D</div>
+            <div class="testimonial-meta"><strong>Danzo Kotadia</strong><span>&#9733;&#9733;&#9733;&#9733;&#9733; &middot; Google Review</span></div>
+          </div>
+        </div>
+        <div class="testimonial">
+          <p class="testimonial-quote">Seeraj sir is my personal trainer since 3 years. His proper guidance, discipline and constant motivation, I was able to gain my muscle and got my dream body.</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">N</div>
+            <div class="testimonial-meta"><strong>Narendra Patel</strong><span>&#9733;&#9733;&#9733;&#9733;&#9733; &middot; Google Review</span></div>
+          </div>
+        </div>
+        <div class="testimonial">
+          <p class="testimonial-quote">Patel Fitness is one of the best gyms in Rajkot city, offering a perfect workout vibe. The gym has excellent trainers who are highly knowledgeable and supportive.</p>
           <div class="testimonial-author">
             <div class="testimonial-avatar">R</div>
-            <div class="testimonial-meta"><strong>Rohit Shah</strong><span>Member &middot; 2 years</span></div>
+            <div class="testimonial-meta"><strong>Rahul Pawar</strong><span>&#9733;&#9733;&#9733;&#9733;&#9733; &middot; Google Review</span></div>
           </div>
         </div>
         <div class="testimonial">
-          <p class="testimonial-quote">Walked in intimidated. Walked out, 14 months later, deadlifting twice my bodyweight. The community is the real secret here.</p>
+          <p class="testimonial-quote">I started my fitness journey when my weight was 135 kg. With proper guidance, discipline, and constant motivation, I was able to reduce my weight to 100 kg within one year.</p>
           <div class="testimonial-author">
-            <div class="testimonial-avatar">A</div>
-            <div class="testimonial-meta"><strong>Aisha Patel</strong><span>Member &middot; 14 months</span></div>
+            <div class="testimonial-avatar">B</div>
+            <div class="testimonial-meta"><strong>Bhavy Madhani</strong><span>&#9733;&#9733;&#9733;&#9733;&#9733; &middot; Google Review</span></div>
           </div>
         </div>
         <div class="testimonial">
-          <p class="testimonial-quote">Steam room after leg day is the best &#8377;6,000 I spend every quarter. Honestly the pro plan pays for itself.</p>
+          <p class="testimonial-quote">Very hygienic workout place, clean &amp; spacious gym, updated equipments, 3 floors, easy parking, nice locker room, steam room, great staff. Amazing facility and great environment.</p>
           <div class="testimonial-author">
-            <div class="testimonial-avatar">V</div>
-            <div class="testimonial-meta"><strong>Vikas Mehta</strong><span>Pro Member &middot; 3 years</span></div>
+            <div class="testimonial-avatar">P</div>
+            <div class="testimonial-meta"><strong>Pooja Patel</strong><span>&#9733;&#9733;&#9733;&#9733;&#9733; &middot; Google Review</span></div>
           </div>
         </div>
         <div class="testimonial">
-          <p class="testimonial-quote">Coach Priya's morning HIIT changed my 6AM &mdash; I actually look forward to Mondays now. Never thought I'd say that.</p>
+          <p class="testimonial-quote">The trainers are very friendly and cooperative with the students. They are always on the floor, ready to help without you having to go looking for them.</p>
           <div class="testimonial-author">
-            <div class="testimonial-avatar">S</div>
-            <div class="testimonial-meta"><strong>Sneha Joshi</strong><span>Member &middot; 8 months</span></div>
+            <div class="testimonial-avatar">T</div>
+            <div class="testimonial-meta"><strong>Tisha Soni</strong><span>&#9733;&#9733;&#9733;&#9733;&#9733; &middot; Google Review</span></div>
+          </div>
+        </div>
+        <div class="testimonial">
+          <p class="testimonial-quote">The best workout place in Rajkot ever experienced. Especially best service by senior trainer Ravi Rathod.</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">M</div>
+            <div class="testimonial-meta"><strong>Meet N Popat</strong><span>&#9733;&#9733;&#9733;&#9733;&#9733; &middot; Google Review</span></div>
           </div>
         </div>
         <!-- duplicates for seamless loop -->
         <div class="testimonial">
-          <p class="testimonial-quote">I've trained at four gyms in Rajkot. This is the only one where the coaches actually remember my goals and hold me to them.</p>
+          <p class="testimonial-quote">I had a great experience at this gym and highly recommend it. The gym offers all facilities needed for a complete workout, with well-maintained equipment and a positive environment.</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">D</div>
+            <div class="testimonial-meta"><strong>Dev Patel</strong><span>&#9733;&#9733;&#9733;&#9733;&#9733; &middot; Google Review</span></div>
+          </div>
+        </div>
+        <div class="testimonial">
+          <p class="testimonial-quote">I've had an amazing experience at Patel Fitness Club. The environment is clean, motivating, and well-equipped for all fitness levels. A special thanks to my Personal Trainer Mr. Ravi Rathod Sir for the guidance and support.</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">Y</div>
+            <div class="testimonial-meta"><strong>Yash Thadeshwar</strong><span>&#9733;&#9733;&#9733;&#9733;&#9733; &middot; Google Review</span></div>
+          </div>
+        </div>
+        <div class="testimonial">
+          <p class="testimonial-quote">I have been working out at Patel Fitness for the last 10 years. The atmosphere is excellent. A special thanks to trainer Ravi Rathod for his tremendous guidance, continuous support &amp; motivation.</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">K</div>
+            <div class="testimonial-meta"><strong>Ketan Patel</strong><span>&#9733;&#9733;&#9733;&#9733;&#9733; &middot; Google Review</span></div>
+          </div>
+        </div>
+        <div class="testimonial">
+          <p class="testimonial-quote">Honestly, if you're serious about changing your physique, Patel's Fitness Centre is the only place to be. But the real game-changer there is Mr. Brijesh Jain.</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">D</div>
+            <div class="testimonial-meta"><strong>Danzo Kotadia</strong><span>&#9733;&#9733;&#9733;&#9733;&#9733; &middot; Google Review</span></div>
+          </div>
+        </div>
+        <div class="testimonial">
+          <p class="testimonial-quote">Seeraj sir is my personal trainer since 3 years. His proper guidance, discipline and constant motivation, I was able to gain my muscle and got my dream body.</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">N</div>
+            <div class="testimonial-meta"><strong>Narendra Patel</strong><span>&#9733;&#9733;&#9733;&#9733;&#9733; &middot; Google Review</span></div>
+          </div>
+        </div>
+        <div class="testimonial">
+          <p class="testimonial-quote">Patel Fitness is one of the best gyms in Rajkot city, offering a perfect workout vibe. The gym has excellent trainers who are highly knowledgeable and supportive.</p>
           <div class="testimonial-author">
             <div class="testimonial-avatar">R</div>
-            <div class="testimonial-meta"><strong>Rohit Shah</strong><span>Member &middot; 2 years</span></div>
+            <div class="testimonial-meta"><strong>Rahul Pawar</strong><span>&#9733;&#9733;&#9733;&#9733;&#9733; &middot; Google Review</span></div>
           </div>
         </div>
         <div class="testimonial">
-          <p class="testimonial-quote">Walked in intimidated. Walked out, 14 months later, deadlifting twice my bodyweight. The community is the real secret here.</p>
+          <p class="testimonial-quote">I started my fitness journey when my weight was 135 kg. With proper guidance, discipline, and constant motivation, I was able to reduce my weight to 100 kg within one year.</p>
           <div class="testimonial-author">
-            <div class="testimonial-avatar">A</div>
-            <div class="testimonial-meta"><strong>Aisha Patel</strong><span>Member &middot; 14 months</span></div>
+            <div class="testimonial-avatar">B</div>
+            <div class="testimonial-meta"><strong>Bhavy Madhani</strong><span>&#9733;&#9733;&#9733;&#9733;&#9733; &middot; Google Review</span></div>
           </div>
         </div>
         <div class="testimonial">
-          <p class="testimonial-quote">Steam room after leg day is the best &#8377;6,000 I spend every quarter. Honestly the pro plan pays for itself.</p>
+          <p class="testimonial-quote">Very hygienic workout place, clean &amp; spacious gym, updated equipments, 3 floors, easy parking, nice locker room, steam room, great staff. Amazing facility and great environment.</p>
           <div class="testimonial-author">
-            <div class="testimonial-avatar">V</div>
-            <div class="testimonial-meta"><strong>Vikas Mehta</strong><span>Pro Member &middot; 3 years</span></div>
+            <div class="testimonial-avatar">P</div>
+            <div class="testimonial-meta"><strong>Pooja Patel</strong><span>&#9733;&#9733;&#9733;&#9733;&#9733; &middot; Google Review</span></div>
           </div>
         </div>
         <div class="testimonial">
-          <p class="testimonial-quote">Coach Priya's morning HIIT changed my 6AM &mdash; I actually look forward to Mondays now. Never thought I'd say that.</p>
+          <p class="testimonial-quote">The trainers are very friendly and cooperative with the students. They are always on the floor, ready to help without you having to go looking for them.</p>
           <div class="testimonial-author">
-            <div class="testimonial-avatar">S</div>
-            <div class="testimonial-meta"><strong>Sneha Joshi</strong><span>Member &middot; 8 months</span></div>
+            <div class="testimonial-avatar">T</div>
+            <div class="testimonial-meta"><strong>Tisha Soni</strong><span>&#9733;&#9733;&#9733;&#9733;&#9733; &middot; Google Review</span></div>
+          </div>
+        </div>
+        <div class="testimonial">
+          <p class="testimonial-quote">The best workout place in Rajkot ever experienced. Especially best service by senior trainer Ravi Rathod.</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">M</div>
+            <div class="testimonial-meta"><strong>Meet N Popat</strong><span>&#9733;&#9733;&#9733;&#9733;&#9733; &middot; Google Review</span></div>
           </div>
         </div>
       </div>
@@ -1978,32 +2292,35 @@
         <div class="section-label">Our Facility</div>
         <h2 class="section-title display">THREE FLOORS.<br><span class="red">ONE MISSION.</span></h2>
       </div>
-      <p class="section-sub">Take a walk through &mdash; from the weight zone on the ground floor to the recovery lounge above.</p>
+      <p class="section-sub">Take a walk through, from the weight zone on the ground floor to the recovery lounge above.</p>
     </div>
 
     <div class="gallery-grid reveal">
       <div class="gallery-item" data-slideshow>
-        <img src="gym-4.jpeg" alt="Weight Zone" class="active">
-        <img src="gym-5.jpeg" alt="Weight Zone">
-        <img src="st-1.jpeg" alt="Weight Zone">
-        <img src="st-2.jpeg" alt="Weight Zone">
-        <img src="st-3.jpeg" alt="Weight Zone">
-        <img src="st-4.jpeg" alt="Weight Zone">
+        <img src="gym-4.jpeg" alt="Weight Zone" class="active" loading="lazy">
+        <img src="gym-5.jpeg" alt="Weight Zone" loading="lazy">
+        <img src="st-1.jpeg" alt="Weight Zone" loading="lazy">
+        <img src="st-2.jpeg" alt="Weight Zone" loading="lazy">
+        <img src="st-3.jpeg" alt="Weight Zone" loading="lazy">
+        <img src="st-4.jpeg" alt="Weight Zone" loading="lazy">
         <div class="gallery-tag">01</div>
         <div class="gallery-label">WEIGHT ZONE</div>
       </div>
       <div class="gallery-item" data-slideshow>
-        <img src="cardio-1.jpeg" alt="Cardio Floor" class="active">
-        <img src="cardio-2.jpeg" alt="Cardio Floor">
-        <img src="cardio-3.jpeg" alt="Cardio Floor">
+        <img src="cardio-1.jpeg" alt="Cardio Floor" class="active" loading="lazy">
+        <img src="cardio-2.jpeg" alt="Cardio Floor" loading="lazy">
+        <img src="cardio-3.jpeg" alt="Cardio Floor" loading="lazy">
         <div class="gallery-tag">02</div>
         <div class="gallery-label">CARDIO FLOOR</div>
       </div>
       <div class="gallery-item">
+        <img src="steam-room.png" alt="Steam Room" class="active" loading="lazy">
         <div class="gallery-tag">03</div>
         <div class="gallery-label">STEAM ROOM</div>
       </div>
-      <div class="gallery-item">
+      <div class="gallery-item" data-slideshow>
+        <img src="locker-room-1.jpeg" alt="Locker Room" class="active" loading="lazy">
+        <img src="locker-room-2.jpeg" alt="Locker Room" loading="lazy">
         <div class="gallery-tag">04</div>
         <div class="gallery-label">LOCKER ROOM</div>
       </div>
@@ -2025,7 +2342,7 @@
     <div class="contact-grid reveal" style="grid-template-columns:1fr">
       <div class="contact-info">
         <div class="map-placeholder" style="aspect-ratio:2/1; max-height:280px; padding:0; background:var(--card);">
-          <iframe src="https://www.google.com/maps?q=Patel's+Fitness+Club,+Panchavati+Road,+Kotecha+Nagar,+Rajkot,+Gujarat&output=embed" width="100%" height="100%" style="border:0; display:block; filter:grayscale(0.8) invert(0.92) contrast(1.1) hue-rotate(180deg);" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          <iframe src="https://www.google.com/maps?q=Patel's+Fitness+Club,+Panchavati+Road,+Kotecha+Nagar,+Rajkot,+Gujarat&output=embed" width="100%" height="100%" style="border:0; display:block; filter:grayscale(0.8) invert(0.92) contrast(1.1) hue-rotate(180deg);" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" sandbox="allow-scripts allow-same-origin allow-popups"></iframe>
         </div>
         <div class="contact-blocks">
           <div class="info-block">
@@ -2034,7 +2351,7 @@
             </div>
             <div>
               <h4>Address</h4>
-              <p>101, Avadh Complex<br>Panchavati Road, Kotecha Nagar<br>Rajkot &ndash; 360001</p>
+              <p>101, Avadh Complex<br>Panchavati Road, Kotecha Nagar<br>Rajkot 360001</p>
             </div>
           </div>
           <div class="info-block">
@@ -2043,7 +2360,7 @@
             </div>
             <div>
               <h4>Hours</h4>
-              <p>Mon&ndash;Sat &middot; 6:00 AM &ndash; 10:00 PM<br>Sunday &middot; 7:00 AM &ndash; 12:00 PM</p>
+              <p>Mon toSat &middot; 6:00 AM  to 10:00 PM<br>Sunday &middot; 7:00 AM  to 12:00 PM</p>
             </div>
           </div>
           <div class="info-block">
@@ -2076,7 +2393,7 @@
 <footer>
   <div class="footer-quote">
     <p>&ldquo;THE ONLY BAD WORKOUT<br>IS THE ONE THAT <span class="red">DIDN'T HAPPEN.</span>&rdquo;</p>
-    <small>&mdash; OUR HOUSE MANTRA</small>
+    <small>OUR HOUSE MANTRA</small>
   </div>
   <div class="footer-grid">
     <div class="footer-brand">
@@ -2089,10 +2406,10 @@
       </a>
       <p>A three-floor strength sanctuary in the heart of Rajkot, built for the few who will do the work.</p>
       <div class="socials">
-        <a href="#" aria-label="Instagram">IG</a>
-        <a href="#" aria-label="Facebook">FB</a>
-        <a href="#" aria-label="YouTube">YT</a>
-        <a href="#" aria-label="WhatsApp">WA</a>
+        <a href="#" aria-label="Instagram" rel="noopener noreferrer">IG</a>
+        <a href="#" aria-label="Facebook" rel="noopener noreferrer">FB</a>
+        <a href="#" aria-label="YouTube" rel="noopener noreferrer">YT</a>
+        <a href="#" aria-label="WhatsApp" rel="noopener noreferrer">WA</a>
       </div>
     </div>
     <div class="footer-col">
@@ -2130,6 +2447,7 @@
 </footer>
 
 <a href="#pricing" class="sticky-cta">JOIN NOW &middot; FREE TRIAL</a>
+<button id="backToTop" class="back-to-top" aria-label="Back to top">&#8593;</button>
 
 <script>
   // Loader with max-timeout fallback
@@ -2139,16 +2457,35 @@
     setTimeout(() => document.getElementById('loader').classList.add('hidden'), 800);
   });
 
-  // Nav on scroll
+  // Nav on scroll + parallax (desktop only) + scroll progress + back-to-top
   const nav = document.getElementById('topnav');
   const heroBg = document.getElementById('heroBg');
+  const scrollProgress = document.getElementById('scrollProgress');
+  const backToTop = document.getElementById('backToTop');
+  const isMobile = !window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   window.addEventListener('scroll', () => {
     const y = window.scrollY;
     nav.classList.toggle('scrolled', y > 40);
-    if (heroBg && y < window.innerHeight) {
+    if (!isMobile && heroBg && y < window.innerHeight) {
       heroBg.style.transform = `translateY(${y * 0.4}px) scale(${1 + y * 0.0003})`;
     }
-  });
+    // Scroll progress bar
+    const scrollMax = document.documentElement.scrollHeight - window.innerHeight;
+    if (scrollProgress && scrollMax > 0) {
+      scrollProgress.style.width = (y / scrollMax * 100) + '%';
+    }
+    // Back-to-top visibility
+    if (backToTop) {
+      backToTop.classList.toggle('visible', y > window.innerHeight);
+    }
+  }, { passive: true });
+
+  // Back-to-top click
+  if (backToTop) {
+    backToTop.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
 
   // Mobile menu toggle
   const navToggle = document.getElementById('navToggle');
@@ -2159,12 +2496,104 @@
     document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
   });
   mobileMenu.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
+    link.addEventListener('click', (e) => {
+      const href = link.getAttribute('href');
       navToggle.classList.remove('active');
       mobileMenu.classList.remove('open');
       document.body.style.overflow = '';
+      if (href && href.startsWith('#')) {
+        e.preventDefault();
+        setTimeout(() => {
+          const target = document.querySelector(href);
+          if (target) target.scrollIntoView({ behavior: 'smooth' });
+        }, 300);
+      }
     });
   });
+
+  // Swipe-to-close mobile menu
+  let menuTouchStartX = 0, menuTouchStartY = 0;
+  mobileMenu.addEventListener('touchstart', (e) => {
+    menuTouchStartX = e.touches[0].clientX;
+    menuTouchStartY = e.touches[0].clientY;
+  }, { passive: true });
+  mobileMenu.addEventListener('touchend', (e) => {
+    const dx = e.changedTouches[0].clientX - menuTouchStartX;
+    const dy = e.changedTouches[0].clientY - menuTouchStartY;
+    if (Math.abs(dx) > 80 && Math.abs(dx) > Math.abs(dy)) {
+      navToggle.classList.remove('active');
+      mobileMenu.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  }, { passive: true });
+
+  // Trainer tap-to-flip on touch devices
+  const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  if (isTouch) {
+    document.querySelectorAll('.trainer').forEach(card => {
+      card.addEventListener('click', () => {
+        document.querySelectorAll('.trainer.flipped').forEach(c => {
+          if (c !== card) c.classList.remove('flipped');
+        });
+        card.classList.toggle('flipped');
+      });
+    });
+    const trainerSub = document.querySelector('#trainers .section-sub');
+    if (trainerSub) trainerSub.textContent = trainerSub.textContent.replace('Hover', 'Tap');
+  }
+
+  // Touch interaction system — adds .touched class for sustained visual feedback
+  if (isMobile) {
+    const touchTargets = '.feature, .program, .tier, .before-after, .gallery-item, .info-block, .btn, .socials a, .footer-col a, .sticky-cta';
+    let currentTouched = null;
+
+    document.addEventListener('click', (e) => {
+      const target = e.target.closest(touchTargets);
+      // Don't interfere with trainer cards (they have their own flip system)
+      if (e.target.closest('.trainer')) return;
+
+      if (currentTouched && currentTouched !== target) {
+        currentTouched.classList.remove('touched');
+      }
+      if (target) {
+        target.classList.add('touched');
+        currentTouched = target;
+      } else if (currentTouched) {
+        currentTouched.classList.remove('touched');
+        currentTouched = null;
+      }
+    });
+
+    // Clear .touched on scroll
+    let scrollClearTimer;
+    window.addEventListener('scroll', () => {
+      if (currentTouched) {
+        clearTimeout(scrollClearTimer);
+        scrollClearTimer = setTimeout(() => {
+          if (currentTouched) {
+            currentTouched.classList.remove('touched');
+            currentTouched = null;
+          }
+        }, 100);
+      }
+    }, { passive: true });
+
+    // Testimonials: pause marquee on touch, resume after 4s
+    const testimonialsEl = document.querySelector('.testimonials');
+    const testimonialsTrack = document.querySelector('.testimonials-track');
+    if (testimonialsEl && testimonialsTrack) {
+      let pauseTimer;
+      testimonialsEl.addEventListener('touchstart', () => {
+        testimonialsTrack.style.animationPlayState = 'paused';
+        clearTimeout(pauseTimer);
+      }, { passive: true });
+      testimonialsEl.addEventListener('touchend', () => {
+        pauseTimer = setTimeout(() => {
+          testimonialsTrack.style.animationPlayState = 'running';
+        }, 4000);
+      }, { passive: true });
+    }
+  }
 
   // Cursor glow
   const cg = document.getElementById('cursorGlow');
@@ -2177,10 +2606,11 @@
     cg.style.display = 'none';
   }
 
-  // Particles
+  // Particles (fewer on mobile for performance)
   const particles = document.getElementById('particles');
   const types = ['dot', 'square', 'line'];
-  for (let i = 0; i < 22; i++) {
+  const particleCount = isMobile ? 8 : 22;
+  for (let i = 0; i < particleCount; i++) {
     const p = document.createElement('div');
     p.className = 'particle ' + types[Math.floor(Math.random() * types.length)];
     p.style.left = Math.random() * 100 + '%';
@@ -2206,12 +2636,13 @@
     const decimals = parseInt(el.dataset.decimals || '0');
     const duration = 1600;
     const start = performance.now();
-    const suffix = el.querySelector('.unit') ? el.querySelector('.unit').outerHTML : (el.querySelector('.plus') ? el.querySelector('.plus').outerHTML : '');
+    // Find or create a text node for the number, leaving suffix spans untouched
+    let numNode = Array.from(el.childNodes).find(n => n.nodeType === Node.TEXT_NODE);
+    if (!numNode) { numNode = document.createTextNode('0'); el.prepend(numNode); }
     function step(now) {
       const t = Math.min(1, (now - start) / duration);
       const eased = 1 - Math.pow(1 - t, 3);
-      const val = (target * eased).toFixed(decimals);
-      el.innerHTML = val + suffix;
+      numNode.textContent = (target * eased).toFixed(decimals);
       if (t < 1) requestAnimationFrame(step);
     }
     requestAnimationFrame(step);
@@ -2227,16 +2658,33 @@
   document.querySelectorAll('[data-count]').forEach(el => countObserver.observe(el));
 
 
-  // Slideshow logic (reused for about + program cards)
+  // Slideshow logic (reused for about + program cards) with swipe support
   document.querySelectorAll('#aboutSlideshow, [data-slideshow]').forEach(container => {
     const imgs = container.querySelectorAll('img');
     if (imgs.length < 2) return;
     let idx = 0;
-    setInterval(() => {
+    let interval = setInterval(advance, 3000);
+
+    function advance() {
       imgs[idx].classList.remove('active');
       idx = (idx + 1) % imgs.length;
       imgs[idx].classList.add('active');
-    }, 3000);
+    }
+    function goTo(newIdx) {
+      imgs[idx].classList.remove('active');
+      idx = ((newIdx % imgs.length) + imgs.length) % imgs.length;
+      imgs[idx].classList.add('active');
+      clearInterval(interval);
+      interval = setInterval(advance, 3000);
+    }
+
+    // Touch swipe to advance/reverse slides
+    let sx = 0;
+    container.addEventListener('touchstart', (e) => { sx = e.touches[0].clientX; }, { passive: true });
+    container.addEventListener('touchend', (e) => {
+      const dx = e.changedTouches[0].clientX - sx;
+      if (Math.abs(dx) > 50) goTo(dx < 0 ? idx + 1 : idx - 1);
+    }, { passive: true });
   });
 </script>
 </body>
