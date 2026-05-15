@@ -15,7 +15,7 @@
 <!-- Open Graph -->
 <meta property="og:title" content="Patel's Fitness Club — Best Gym in Rajkot">
 <meta property="og:description" content="3-floor premium gym with expert trainers, steam room, and 500+ member transformations. Rajkot's top-rated fitness destination since 2015.">
-<meta property="og:image" content="https://patelsfitnessclub.com/hero-bg.png">
+<meta property="og:image" content="https://patelsfitnessclub.com/hero-bg.jpg">
 <meta property="og:url" content="https://patelsfitnessclub.com/">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="en_IN">
@@ -25,11 +25,12 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Patel's Fitness Club — Best Gym in Rajkot">
 <meta name="twitter:description" content="3-floor premium gym with expert trainers, steam room, and 500+ member transformations.">
-<meta name="twitter:image" content="https://patelsfitnessclub.com/hero-bg.png">
+<meta name="twitter:image" content="https://patelsfitnessclub.com/hero-bg.jpg">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="hero-bg.webp" type="image/webp">
 <style>
   :root {
     --bg: #0A0A0A;
@@ -294,7 +295,8 @@
     position: absolute; inset: 0;
     background:
       linear-gradient(180deg, rgba(10,10,10,0.45) 0%, rgba(10,10,10,0.65) 50%, #0A0A0A 100%),
-      url('hero-bg.png') center/cover no-repeat;
+      url('hero-bg.webp') center/cover no-repeat,
+      url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDACgcHiMeGSgjISMtKygwPGRBPDc3PHtYXUlkkYCZlo+AjIqgtObDoKrarYqMyP/L2u71////m8H////6/+b9//j/2wBDASstLTw1PHZBQXb4pYyl+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj/wAARCAANABQDASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAAIEA//EAB8QAQACAQQDAQAAAAAAAAAAAAEAAhEDEiExIkFRgf/EABUBAQEAAAAAAAAAAAAAAAAAAAAB/8QAFREBAQAAAAAAAAAAAAAAAAAAABH/2gAMAwEAAhEDEQA/AJaUpYWqB3yTUrSw42iHyTafifeI7bJBCX1Ae7fjCI03e8YhCP/Z') center/cover no-repeat;
     will-change: transform;
   }
   .hero-bg::before {
@@ -1705,7 +1707,7 @@
   "url": "https://patelsfitnessclub.com",
   "telephone": "+919876543210",
   "email": "hello@patelsfitness.in",
-  "image": "https://patelsfitnessclub.com/hero-bg.png",
+  "image": "https://patelsfitnessclub.com/hero-bg.jpg",
   "priceRange": "₹3,000 - ₹18,000",
   "currenciesAccepted": "INR",
   "address": {
@@ -1858,13 +1860,13 @@
   <div class="section-wrap">
     <div class="about-grid reveal">
       <div class="about-image" id="aboutSlideshow">
-        <img src="gym-1.jpeg" alt="Gym interior" class="active">
-        <img src="gym-2.jpeg" alt="Gym interior" loading="lazy">
-        <img src="gym-3.jpeg" alt="Gym interior" loading="lazy">
-        <img src="gym-4.jpeg" alt="Gym interior" loading="lazy">
-        <img src="gym-5.jpeg" alt="Gym interior" loading="lazy">
-        <img src="gym-6.jpeg" alt="Gym interior" loading="lazy">
-        <img src="gym-7.jpeg" alt="Gym interior" loading="lazy">
+        <picture><source srcset="gym-1.webp" type="image/webp"><img src="gym-1.jpeg" alt="Gym interior" class="active"></picture>
+        <picture><source srcset="gym-2.webp" type="image/webp"><img src="gym-2.jpeg" alt="Gym interior" loading="lazy"></picture>
+        <picture><source srcset="gym-3.webp" type="image/webp"><img src="gym-3.jpeg" alt="Gym interior" loading="lazy"></picture>
+        <picture><source srcset="gym-4.webp" type="image/webp"><img src="gym-4.jpeg" alt="Gym interior" loading="lazy"></picture>
+        <picture><source srcset="gym-5.webp" type="image/webp"><img src="gym-5.jpeg" alt="Gym interior" loading="lazy"></picture>
+        <picture><source srcset="gym-6.webp" type="image/webp"><img src="gym-6.jpeg" alt="Gym interior" loading="lazy"></picture>
+        <picture><source srcset="gym-7.webp" type="image/webp"><img src="gym-7.jpeg" alt="Gym interior" loading="lazy"></picture>
       </div>
       <div class="about-text">
         <div class="section-label">Why Choose Us</div>
@@ -1939,10 +1941,10 @@
     <div class="programs-grid reveal">
       <div class="program">
         <div class="program-image" data-slideshow>
-          <img src="st-1.jpeg" alt="Strength Training" class="active" loading="lazy">
-          <img src="st-2.jpeg" alt="Strength Training" loading="lazy">
-          <img src="st-3.jpeg" alt="Strength Training" loading="lazy">
-          <img src="st-4.jpeg" alt="Strength Training" loading="lazy">
+          <picture><source srcset="st-1.webp" type="image/webp"><img src="st-1.jpeg" alt="Strength Training" class="active" loading="lazy"></picture>
+          <picture><source srcset="st-2.webp" type="image/webp"><img src="st-2.jpeg" alt="Strength Training" loading="lazy"></picture>
+          <picture><source srcset="st-3.webp" type="image/webp"><img src="st-3.jpeg" alt="Strength Training" loading="lazy"></picture>
+          <picture><source srcset="st-4.webp" type="image/webp"><img src="st-4.jpeg" alt="Strength Training" loading="lazy"></picture>
         </div>
         <div class="program-num">/ 01</div>
         <h3>Strength Training</h3>
@@ -1950,9 +1952,9 @@
       </div>
       <div class="program">
         <div class="program-image" data-slideshow>
-          <img src="cardio-1.jpeg" alt="Cardio & HIIT" class="active" loading="lazy">
-          <img src="cardio-2.jpeg" alt="Cardio & HIIT" loading="lazy">
-          <img src="cardio-3.jpeg" alt="Cardio & HIIT" loading="lazy">
+          <picture><source srcset="cardio-1.webp" type="image/webp"><img src="cardio-1.jpeg" alt="Cardio & HIIT" class="active" loading="lazy"></picture>
+          <picture><source srcset="cardio-2.webp" type="image/webp"><img src="cardio-2.jpeg" alt="Cardio & HIIT" loading="lazy"></picture>
+          <picture><source srcset="cardio-3.webp" type="image/webp"><img src="cardio-3.jpeg" alt="Cardio & HIIT" loading="lazy"></picture>
         </div>
         <div class="program-num">/ 02</div>
         <h3>Cardio & HIIT</h3>
@@ -1960,7 +1962,7 @@
       </div>
       <div class="program">
         <div class="program-image">
-          <img src="personal-training.jpeg" alt="Personal Training" class="active" loading="lazy">
+          <picture><source srcset="personal-training.webp" type="image/webp"><img src="personal-training.jpeg" alt="Personal Training" class="active" loading="lazy"></picture>
         </div>
         <div class="program-num">/ 03</div>
         <h3>Personal Training</h3>
@@ -1968,7 +1970,7 @@
       </div>
       <div class="program">
         <div class="program-image">
-          <img src="weight-loss.jpeg" alt="Weight Loss Program" class="active" loading="lazy">
+          <picture><source srcset="weight-loss.webp" type="image/webp"><img src="weight-loss.jpeg" alt="Weight Loss Program" class="active" loading="lazy"></picture>
         </div>
         <div class="program-num">/ 04</div>
         <h3>Weight Loss Program</h3>
@@ -1993,7 +1995,7 @@
       <div class="trainer">
         <div class="trainer-inner">
           <div class="trainer-face front">
-            <div class="trainer-photo"><img src="trainer-ravi-rathod.jpeg" alt="Ravi Rathod" loading="lazy"></div>
+            <div class="trainer-photo"><picture><source srcset="trainer-ravi-rathod.webp" type="image/webp"><img src="trainer-ravi-rathod.jpeg" alt="Ravi Rathod" loading="lazy"></picture></div>
             <div class="trainer-info">
               <h3>Ravi Rathod</h3>
               <div class="trainer-spec">CPT Level 2 (INFS)</div>
@@ -2014,7 +2016,7 @@
       <div class="trainer">
         <div class="trainer-inner">
           <div class="trainer-face front">
-            <div class="trainer-photo"><img src="trainer-seeraj.png" alt="Seeraj Dalwani" style="object-position:center 30%;" loading="lazy"></div>
+            <div class="trainer-photo"><picture><source srcset="trainer-seeraj.webp" type="image/webp"><img src="trainer-seeraj.jpg" alt="Seeraj Dalwani" style="object-position:center 30%;" loading="lazy"></picture></div>
             <div class="trainer-info">
               <h3>Seeraj Dalwani</h3>
               <div class="trainer-spec">MIFF Certified</div>
@@ -2035,7 +2037,7 @@
       <div class="trainer">
         <div class="trainer-inner">
           <div class="trainer-face front">
-            <div class="trainer-photo"><img src="trainer-brijesh.png" alt="Brijesh Jain" style="object-position:center center;" loading="lazy"></div>
+            <div class="trainer-photo"><picture><source srcset="trainer-brijesh.webp" type="image/webp"><img src="trainer-brijesh.jpg" alt="Brijesh Jain" style="object-position:center center;" loading="lazy"></picture></div>
             <div class="trainer-info">
               <h3>Brijesh Jain</h3>
               <div class="trainer-spec">Pro Ultimate Academy</div>
@@ -2056,7 +2058,7 @@
       <div class="trainer">
         <div class="trainer-inner">
           <div class="trainer-face front">
-            <div class="trainer-photo"><img src="trainer-smit.jpeg" alt="Smit" loading="lazy"></div>
+            <div class="trainer-photo"><picture><source srcset="trainer-smit.webp" type="image/webp"><img src="trainer-smit.jpeg" alt="Smit" loading="lazy"></picture></div>
             <div class="trainer-info">
               <h3>Smit</h3>
               <div class="trainer-spec">ACE-CPT &middot; Functional Training</div>
@@ -2077,7 +2079,7 @@
       <div class="trainer">
         <div class="trainer-inner">
           <div class="trainer-face front">
-            <div class="trainer-photo"><img src="trainer-rahul.jpeg" alt="Rahul" style="object-position:center center;" loading="lazy"></div>
+            <div class="trainer-photo"><picture><source srcset="trainer-rahul.webp" type="image/webp"><img src="trainer-rahul.jpeg" alt="Rahul" style="object-position:center center;" loading="lazy"></picture></div>
             <div class="trainer-info">
               <h3>Rahul</h3>
               <div class="trainer-spec">ISSA-CPT &middot; Weight Loss</div>
@@ -2181,26 +2183,26 @@
 
     <div class="results-grid reveal">
       <div class="before-after">
-        <div class="ba-half before"><img src="t1-before.png" alt="Before" loading="lazy"><span>BEFORE 99.8 KG</span></div>
-        <div class="ba-half after"><img src="t1-after.png" alt="After" loading="lazy"><span>AFTER 80.7 KG</span></div>
+        <div class="ba-half before"><picture><source srcset="t1-before.webp" type="image/webp"><img src="t1-before.jpg" alt="Before" loading="lazy"></picture><span>BEFORE 99.8 KG</span></div>
+        <div class="ba-half after"><picture><source srcset="t1-after.webp" type="image/webp"><img src="t1-after.jpg" alt="After" loading="lazy"></picture><span>AFTER 80.7 KG</span></div>
         <div class="ba-divider"></div>
         <div class="ba-caption">3 MONTHS &middot; -19 KG</div>
       </div>
       <div class="before-after">
-        <div class="ba-half before"><img src="t2-before.png" alt="Before" loading="lazy"><span>BEFORE</span></div>
-        <div class="ba-half after"><img src="t2-after.png" alt="After" loading="lazy"><span>AFTER 1 YEAR</span></div>
+        <div class="ba-half before"><picture><source srcset="t2-before.webp" type="image/webp"><img src="t2-before.jpg" alt="Before" loading="lazy"></picture><span>BEFORE</span></div>
+        <div class="ba-half after"><picture><source srcset="t2-after.webp" type="image/webp"><img src="t2-after.jpg" alt="After" loading="lazy"></picture><span>AFTER 1 YEAR</span></div>
         <div class="ba-divider"></div>
         <div class="ba-caption">1 YEAR &middot; -31 KG</div>
       </div>
       <div class="before-after">
-        <div class="ba-half before"><img src="t3-before.png" alt="Before" loading="lazy"><span>BEFORE</span></div>
-        <div class="ba-half after"><img src="t3-after.png" alt="After" loading="lazy"><span>AFTER</span></div>
+        <div class="ba-half before"><picture><source srcset="t3-before.webp" type="image/webp"><img src="t3-before.jpg" alt="Before" loading="lazy"></picture><span>BEFORE</span></div>
+        <div class="ba-half after"><picture><source srcset="t3-after.webp" type="image/webp"><img src="t3-after.jpg" alt="After" loading="lazy"></picture><span>AFTER</span></div>
         <div class="ba-divider"></div>
         <div class="ba-caption">WEIGHT LOSS TRANSFORMATION</div>
       </div>
       <div class="before-after">
-        <div class="ba-half before"><img src="t4-before.jpeg" alt="Before" style="object-fit:contain; background:#0A0A0A;" loading="lazy"><span>BEFORE</span></div>
-        <div class="ba-half after"><img src="t4-after.jpeg" alt="After" style="object-fit:contain; background:#0A0A0A;" loading="lazy"><span>AFTER</span></div>
+        <div class="ba-half before"><picture><source srcset="t4-before.webp" type="image/webp"><img src="t4-before.jpeg" alt="Before" style="object-fit:contain; background:#0A0A0A;" loading="lazy"></picture><span>BEFORE</span></div>
+        <div class="ba-half after"><picture><source srcset="t4-after.webp" type="image/webp"><img src="t4-after.jpeg" alt="After" style="object-fit:contain; background:#0A0A0A;" loading="lazy"></picture><span>AFTER</span></div>
         <div class="ba-divider"></div>
         <div class="ba-caption">FITNESS TRANSFORMATION</div>
       </div>
@@ -2382,30 +2384,30 @@
 
     <div class="gallery-grid reveal">
       <div class="gallery-item" data-slideshow>
-        <img src="gym-4.jpeg" alt="Weight Zone" class="active" loading="lazy">
-        <img src="gym-5.jpeg" alt="Weight Zone" loading="lazy">
-        <img src="st-1.jpeg" alt="Weight Zone" loading="lazy">
-        <img src="st-2.jpeg" alt="Weight Zone" loading="lazy">
-        <img src="st-3.jpeg" alt="Weight Zone" loading="lazy">
-        <img src="st-4.jpeg" alt="Weight Zone" loading="lazy">
+        <picture><source srcset="gym-4.webp" type="image/webp"><img src="gym-4.jpeg" alt="Weight Zone" class="active" loading="lazy"></picture>
+        <picture><source srcset="gym-5.webp" type="image/webp"><img src="gym-5.jpeg" alt="Weight Zone" loading="lazy"></picture>
+        <picture><source srcset="st-1.webp" type="image/webp"><img src="st-1.jpeg" alt="Weight Zone" loading="lazy"></picture>
+        <picture><source srcset="st-2.webp" type="image/webp"><img src="st-2.jpeg" alt="Weight Zone" loading="lazy"></picture>
+        <picture><source srcset="st-3.webp" type="image/webp"><img src="st-3.jpeg" alt="Weight Zone" loading="lazy"></picture>
+        <picture><source srcset="st-4.webp" type="image/webp"><img src="st-4.jpeg" alt="Weight Zone" loading="lazy"></picture>
         <div class="gallery-tag">01</div>
         <div class="gallery-label">WEIGHT ZONE</div>
       </div>
       <div class="gallery-item" data-slideshow>
-        <img src="cardio-1.jpeg" alt="Cardio Floor" class="active" loading="lazy">
-        <img src="cardio-2.jpeg" alt="Cardio Floor" loading="lazy">
-        <img src="cardio-3.jpeg" alt="Cardio Floor" loading="lazy">
+        <picture><source srcset="cardio-1.webp" type="image/webp"><img src="cardio-1.jpeg" alt="Cardio Floor" class="active" loading="lazy"></picture>
+        <picture><source srcset="cardio-2.webp" type="image/webp"><img src="cardio-2.jpeg" alt="Cardio Floor" loading="lazy"></picture>
+        <picture><source srcset="cardio-3.webp" type="image/webp"><img src="cardio-3.jpeg" alt="Cardio Floor" loading="lazy"></picture>
         <div class="gallery-tag">02</div>
         <div class="gallery-label">CARDIO FLOOR</div>
       </div>
       <div class="gallery-item">
-        <img src="steam-room.png" alt="Steam Room" class="active" loading="lazy">
+        <picture><source srcset="steam-room.webp" type="image/webp"><img src="steam-room.jpg" alt="Steam Room" class="active" loading="lazy"></picture>
         <div class="gallery-tag">03</div>
         <div class="gallery-label">STEAM ROOM</div>
       </div>
       <div class="gallery-item" data-slideshow>
-        <img src="locker-room-1.jpeg" alt="Locker Room" class="active" loading="lazy">
-        <img src="locker-room-2.jpeg" alt="Locker Room" loading="lazy">
+        <picture><source srcset="locker-room-1.webp" type="image/webp"><img src="locker-room-1.jpeg" alt="Locker Room" class="active" loading="lazy"></picture>
+        <picture><source srcset="locker-room-2.webp" type="image/webp"><img src="locker-room-2.jpeg" alt="Locker Room" loading="lazy"></picture>
         <div class="gallery-tag">04</div>
         <div class="gallery-label">LOCKER ROOM</div>
       </div>

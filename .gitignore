@@ -14,3 +14,9 @@ desktop.ini
 # Node (if firebase tools installed later)
 node_modules/
 .firebase/
+
+# Image optimization (one-off scripts)
+originals/
+optimize_images.py
+update_html.py
+hero-placeholder.txt

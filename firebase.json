@@ -6,7 +6,11 @@
       "**/.*",
       "**/node_modules/**",
       "CLAUDE.md",
-      "README.md"
+      "README.md",
+      "originals/**",
+      "optimize_images.py",
+      "update_html.py",
+      "hero-placeholder.txt"
     ],
     "rewrites": [
       {
